@@ -253,7 +253,7 @@ func (api *ConsensusAPI) forkchoiceUpdated(update engine.ForkchoiceStateV1, payl
 				context = append(context, []interface{}{"finalized", finalized.Number}...)
 			}
 		}
-		log.Info("Forkchoice requested sync to new head", context...)
+		log.Info("Forkchoice2 requested sync to new head", context...)
 		if err := api.eth.Downloader().BeaconSync(api.eth.SyncMode(), header, finalized); err != nil {
 			return engine.STATUS_SYNCING, err
 		}
