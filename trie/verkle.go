@@ -19,6 +19,7 @@ package trie
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"math/big"
@@ -26,6 +27,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/trie/trienode"
 	"github.com/ethereum/go-ethereum/trie/utils"
 	"github.com/ethereum/go-verkle"
@@ -176,6 +178,11 @@ func (t *VerkleTrie) UpdateAccount(addr common.Address, acc *types.StateAccount)
 
 	switch root := t.root.(type) {
 	case *verkle.InternalNode:
+		for i := 0; i < len(values); i++ {
+			if values[i] != nil {
+				log.Info("Inserting values at account", "stem", hex.EncodeToString(stem), "i", i, "values", hex.EncodeToString(values[i]))
+			}
+		}
 		err = root.InsertValuesAtStem(stem, values, t.FlatdbNodeResolver)
 	default:
 		return errInvalidRootType
@@ -191,6 +198,12 @@ func (t *VerkleTrie) UpdateAccount(addr common.Address, acc *types.StateAccount)
 func (trie *VerkleTrie) UpdateStem(key []byte, values [][]byte) error {
 	switch root := trie.root.(type) {
 	case *verkle.InternalNode:
+		for i := 0; i < len(values); i++ {
+
+			log.Info("Updating steam values at stem", "stem", key, "i", i, "values", hex.EncodeToString(values[i]))
+
+		}
+		log.Info("Updating steam values at stem", "key", key, "values", values)
 		return root.InsertValuesAtStem(key, values, trie.FlatdbNodeResolver)
 	default:
 		panic("invalid root type")
@@ -225,6 +238,7 @@ func (t *VerkleTrie) DeleteAccount(addr common.Address) error {
 
 	switch root := t.root.(type) {
 	case *verkle.InternalNode:
+		log.Info("Inserting zero into 256 leaves ", "stem", hex.EncodeToString(stem), "address", addr)
 		err = root.InsertValuesAtStem(stem, values, t.FlatdbNodeResolver)
 	default:
 		return errInvalidRootType
