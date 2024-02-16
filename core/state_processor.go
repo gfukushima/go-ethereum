@@ -18,6 +18,7 @@ package core
 
 import (
 	"encoding/binary"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"math/big"
@@ -262,6 +263,7 @@ func (kvm *keyValueMigrator) addAccount(addr []byte, acc *types.StateAccount) {
 	leafNodeData.Values[tutils.NonceLeafKey] = nonce[:]
 
 	leafNodeData.Values[tutils.CodeKeccakLeafKey] = acc.CodeHash[:]
+	log.Info("Adding account for address", "address", hex.EncodeToString(addr))
 }
 
 func (kvm *keyValueMigrator) addAccountCode(addr []byte, codeSize uint64, chunks []byte) {
