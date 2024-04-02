@@ -23,6 +23,7 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/eth/protocols/eth"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/p2p/enode"
 )
 
@@ -63,6 +64,7 @@ func (h *ethHandler) Handle(peer *eth.Peer, packet eth.Packet) error {
 	case *eth.TransactionsPacket:
 		for _, tx := range *packet {
 			if tx.Type() == types.BlobTxType {
+				log.Error("disallowed broadcast blob transaction", "tx", tx.Hash())
 				return errors.New("disallowed broadcast blob transaction")
 			}
 		}

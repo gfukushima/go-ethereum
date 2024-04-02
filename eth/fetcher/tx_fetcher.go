@@ -593,6 +593,7 @@ func (f *TxFetcher) loop() {
 						if meta := txset[hash]; meta != nil {
 							if delivery.metas[i].kind != meta.kind {
 								log.Warn("Announced transaction type mismatch", "peer", peer, "tx", hash, "type", delivery.metas[i].kind, "ann", meta.kind)
+								log.Warn("1 - Droping peer", "peer", peer)
 								f.dropPeer(peer)
 							} else if delivery.metas[i].size != meta.size {
 								if math.Abs(float64(delivery.metas[i].size)-float64(meta.size)) > 8 {
@@ -603,6 +604,7 @@ func (f *TxFetcher) loop() {
 									// wiggle-room where we only warn, but don't drop.
 									//
 									// TODO(karalabe): Get rid of this relaxation when clients are proven stable.
+									log.Warn("2 - Droping peer", "peer", peer)
 									f.dropPeer(peer)
 								}
 							}
@@ -619,6 +621,7 @@ func (f *TxFetcher) loop() {
 						if meta := txset[hash]; meta != nil {
 							if delivery.metas[i].kind != meta.kind {
 								log.Warn("Announced transaction type mismatch", "peer", peer, "tx", hash, "type", delivery.metas[i].kind, "ann", meta.kind)
+								log.Warn("3 - Droping peer", "peer", peer)
 								f.dropPeer(peer)
 							} else if delivery.metas[i].size != meta.size {
 								if math.Abs(float64(delivery.metas[i].size)-float64(meta.size)) > 8 {
@@ -629,6 +632,7 @@ func (f *TxFetcher) loop() {
 									// wiggle-room where we only warn, but don't drop.
 									//
 									// TODO(karalabe): Get rid of this relaxation when clients are proven stable.
+									log.Warn("4 - Droping peer", "peer", peer)
 									f.dropPeer(peer)
 								}
 							}
